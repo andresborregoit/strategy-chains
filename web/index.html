@@ -1,0 +1,218 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Patrones de Diseño - Strategy + Chain</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <main class="app">
+      <aside class="sidebar">
+        <p class="eyebrow">Trabajo practico</p>
+        <h1>Strategy + Chain of Responsibility</h1>
+        <p class="intro">
+          Selecciona un pedido y avanza paso a paso para entender como se calcula y valida.
+        </p>
+
+        <div class="view-tabs" role="tablist" aria-label="Secciones del trabajo practico">
+          <button id="simulator-tab" class="view-tab active" type="button" role="tab" aria-selected="true">
+            Simulador
+          </button>
+          <button id="theory-tab" class="view-tab" type="button" role="tab" aria-selected="false">
+            Teoria
+          </button>
+        </div>
+
+        <div id="case-controls">
+          <p class="sidebar-label">Casos de prueba</p>
+          <div class="case-list" aria-label="Casos de prueba">
+            <button class="case-button active" data-case="aprobado">Pedido aprobado</button>
+            <button class="case-button" data-case="stock">Rechazo por stock</button>
+            <button class="case-button" data-case="pago">Rechazo por pago</button>
+          </div>
+        </div>
+      </aside>
+
+      <section id="simulator-view" class="workspace" role="tabpanel" aria-labelledby="simulator-tab">
+        <header class="summary">
+          <div>
+            <p class="eyebrow">Caso seleccionado</p>
+            <h2 id="case-title">Pedido aprobado</h2>
+          </div>
+          <div class="price-box">
+            <span>Precio final</span>
+            <strong id="final-price">$0</strong>
+          </div>
+        </header>
+
+        <section class="guide panel">
+          <div class="panel-header">
+            <div>
+              <h3 id="guide-title">Inicio</h3>
+              <p id="guide-kind" class="guide-kind">Pedido</p>
+            </div>
+            <span id="step-counter">Paso 1 de 1</span>
+          </div>
+
+          <p id="guide-text" class="guide-text"></p>
+
+          <div class="price-flow">
+            <div>
+              <span>Precio antes</span>
+              <strong id="price-before">$0</strong>
+            </div>
+            <div>
+              <span>Precio despues</span>
+              <strong id="price-after">$0</strong>
+            </div>
+          </div>
+
+          <div id="progress-dots" class="progress-dots" aria-label="Pasos del recorrido"></div>
+
+          <div class="guide-actions">
+            <button id="previous-step" class="secondary-button">Anterior</button>
+            <button id="restart-step" class="secondary-button">Reiniciar</button>
+            <button id="next-step" class="primary-button">Siguiente</button>
+          </div>
+        </section>
+
+        <section class="panel code-panel">
+          <div class="panel-header">
+            <div>
+              <h3>Ruta del codigo</h3>
+              <p id="code-concept" class="guide-kind">Concepto</p>
+            </div>
+            <span id="code-file">src/main.ts</span>
+          </div>
+          <div>
+            <p class="route-label">Archivos que colaboran en este paso</p>
+            <div id="code-route" class="code-route" aria-label="Ruta de archivos del paso"></div>
+          </div>
+          <p id="code-role" class="code-role"></p>
+          <p id="code-explanation" class="code-explanation"></p>
+          <pre class="code-block"><code id="code-snippet"></code></pre>
+        </section>
+
+        <section class="panel reveal-panel">
+          <div class="panel-header">
+            <h3>Productos</h3>
+            <span>Datos de entrada</span>
+          </div>
+          <div id="products" class="products"></div>
+        </section>
+
+        <section class="columns">
+          <article class="panel">
+            <div class="panel-header">
+              <h3>Strategy</h3>
+              <span>Reglas de precio</span>
+            </div>
+            <ol id="strategies" class="steps"></ol>
+          </article>
+
+          <article class="panel">
+            <div class="panel-header">
+              <h3>Chain of Responsibility</h3>
+              <span>Validaciones</span>
+            </div>
+            <ol id="validations" class="steps"></ol>
+          </article>
+        </section>
+      </section>
+
+      <section id="theory-view" class="workspace theory-view" role="tabpanel" aria-labelledby="theory-tab" hidden>
+        <header class="theory-header">
+          <p class="eyebrow">La idea detras del codigo</p>
+          <h2>Teoria explicada simple</h2>
+          <p>
+            Asi entiendo por que usamos Strategy y Chain of Responsibility en este trabajo.
+          </p>
+        </header>
+
+        <div class="theory-content">
+          <article class="theory-block">
+            <p class="theory-number">01</p>
+            <div>
+              <h3>¿Que problema resuelve Strategy?</h3>
+              <p>
+                Strategy sirve cuando tengo que hacer una misma tarea, pero esa tarea puede resolverse
+                de distintas maneras. En este proyecto la tarea es modificar el precio de una compra:
+                a veces aplico un descuento VIP, otras veces uno por cantidad y otras sumo el envio.
+              </p>
+              <p>
+                Sin el patron, toda esa logica terminaria mezclada en una clase llena de condiciones.
+                Con Strategy, cada regla tiene su propia clase y la calculadora solamente las ejecuta.
+              </p>
+              <p class="theory-example">
+                En criollo: la calculadora sabe cuando ejecutar una regla, pero cada estrategia sabe
+                como hacer su propio calculo.
+              </p>
+            </div>
+          </article>
+
+          <article class="theory-block">
+            <p class="theory-number">02</p>
+            <div>
+              <h3>¿Por que una compra puede necesitar varias estrategias?</h3>
+              <p>
+                Porque en una compra pueden participar varias reglas al mismo tiempo. Un cliente puede
+                ser VIP, comprar mas de diez productos, aprovechar una promocion y ademas elegir envio
+                express. No alcanza con seleccionar una sola estrategia y descartar las demas.
+              </p>
+              <p>
+                Por eso la calculadora recibe una lista. Toma el precio que deja una estrategia y se lo
+                pasa a la siguiente. El orden importa, porque cada regla trabaja sobre el resultado anterior.
+              </p>
+              <p class="theory-example">
+                En el pedido de Ana se aplican, en orden: Cliente VIP, descuento por cantidad,
+                promocion especial y envio express.
+              </p>
+            </div>
+          </article>
+
+          <article class="theory-block">
+            <p class="theory-number">03</p>
+            <div>
+              <h3>¿Que problema resuelve Chain of Responsibility?</h3>
+              <p>
+                Chain of Responsibility sirve para separar una serie de controles que deben hacerse
+                uno despues del otro. En vez de tener un metodo enorme que valide cliente, stock, pago
+                y limite de compra, cada validador se ocupa de una sola cosa.
+              </p>
+              <p>
+                Los validadores se conectan formando una cadena. Cada uno revisa el pedido y, si esta
+                todo bien, se lo pasa al siguiente. Tambien puedo cambiar el orden o agregar una nueva
+                validacion sin reescribir las anteriores.
+              </p>
+              <p class="theory-example">
+                En este proyecto el recorrido es: cliente, stock, pago y limite de compra.
+              </p>
+            </div>
+          </article>
+
+          <article class="theory-block">
+            <p class="theory-number">04</p>
+            <div>
+              <h3>¿Que sucede cuando un elemento de la cadena rechaza el pedido?</h3>
+              <p>
+                La cadena se corta en ese momento. El validador devuelve un resultado rechazado y ya
+                no llama al siguiente. Esto evita hacer controles que dejaron de tener sentido y conserva
+                el motivo concreto del rechazo.
+              </p>
+              <p>
+                Por ejemplo, si no hay stock, no tiene sentido seguir preguntando si el pago fue aprobado.
+                El resultado final informa que falta stock y el procesamiento termina ahi.
+              </p>
+              <p class="theory-example">
+                Rechazar no significa que el programa falle: es una respuesta esperada del proceso de validacion.
+              </p>
+            </div>
+          </article>
+        </div>
+      </section>
+    </main>
+
+    <script src="./app.js"></script>
+  </body>
+</html>

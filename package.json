@@ -1,0 +1,10 @@
+{
+  "name": "trabajo-practico-patrones-diseno",
+  "version": "1.0.0",
+  "description": "Trabajo practico sobre Strategy y Chain of Responsibility",
+  "type": "module",
+  "scripts": {
+    "start": "node --experimental-strip-types src/main.ts",
+    "web": "node --watch-path=web --experimental-strip-types server.ts"
+  }
+}
